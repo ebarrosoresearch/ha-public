@@ -1,0 +1,3306 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            Applied research in complexity science and AI — Williams Meeting ·
+            June 5, 2026
+        </title>
+        <style>
+            :root {
+                --bg: #fafaf7;
+                --stage-bg: #fafaf7;
+                --text: #1a1a1a;
+                --secondary: #5a5a5a;
+                --accent: #1a3a5c;
+                --accent-soft: rgba(26, 58, 92, 0.08);
+                --border: #d6d3cc;
+                --rule: #1a1a1a;
+                --fill-bg: #fff6d6;
+                --fill-border: #c9a227;
+                --fill-text: #6b5510;
+                --serif:
+                    "Source Serif 4", "Source Serif Pro", "Charter", Georgia,
+                    "Times New Roman", serif;
+                --sans:
+                    "Inter", "SF Pro Text", -apple-system, "Segoe UI",
+                    sans-serif;
+                --scale: 1;
+            }
+
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            html,
+            body {
+                height: 100%;
+                width: 100%;
+            }
+
+            body {
+                background: var(--stage-bg);
+                color: var(--text);
+                font-family: var(--serif);
+                -webkit-font-smoothing: antialiased;
+                overflow: hidden;
+            }
+
+            /* ============================================================
+     FIXED-ASPECT SLIDE (1600 × 900, 16:9)
+     ============================================================ */
+            .slide {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                width: 1600px;
+                height: 900px;
+                padding: 100px 130px 100px 130px;
+                background: var(--bg);
+                transform: translate(-50%, -50%) scale(var(--scale));
+                transform-origin: center center;
+                font-size: 20px;
+                line-height: 1.6;
+                overflow: hidden;
+            }
+            .slide.active {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+            }
+
+            /* --- Typography --- */
+            h1,
+            h2,
+            h3,
+            h4 {
+                font-family: var(--sans);
+                font-weight: 600;
+                color: var(--text);
+                letter-spacing: -0.01em;
+            }
+            h1 {
+                font-size: 44px;
+                line-height: 1.1;
+                margin-bottom: 12px;
+                max-width: 1000px;
+            }
+            h2 {
+                font-size: 25px;
+                font-weight: 400;
+                color: var(--secondary);
+                font-family: var(--serif);
+                font-style: italic;
+                max-width: 1240px;
+                margin-bottom: 36px;
+            }
+            h3 {
+                font-size: 22px;
+                font-weight: 600;
+                margin-top: 22px;
+                margin-bottom: 8px;
+            }
+            h4 {
+                font-size: 18px;
+                margin-top: 18px;
+                margin-bottom: 6px;
+                color: var(--secondary);
+            }
+            p {
+                margin-bottom: 16px;
+                max-width: 1280px;
+            }
+            ul {
+                margin: 0 0 18px 26px;
+                max-width: 1280px;
+            }
+            li {
+                margin-bottom: 9px;
+            }
+            ol {
+                margin: 0 0 18px 30px;
+                max-width: 1280px;
+            }
+            ol li {
+                margin-bottom: 10px;
+            }
+            em {
+                font-style: italic;
+            }
+            strong {
+                font-weight: 600;
+            }
+
+            /* --- Section label --- */
+            .section-label {
+                font-family: var(--sans);
+                font-size: 15px;
+                text-transform: uppercase;
+                letter-spacing: 0.18em;
+                color: var(--accent);
+                margin-bottom: 18px;
+                font-weight: 500;
+            }
+
+            /* --- Title rule --- */
+            .title-rule {
+                width: 68px;
+                height: 2.5px;
+                background: var(--rule);
+                margin: 10px 0 36px 0;
+            }
+
+            /* --- Tables --- */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-family: var(--serif);
+                font-size: 18px;
+                margin: 18px 0 20px 0;
+            }
+            thead tr {
+                border-top: 2px solid var(--rule);
+                border-bottom: 2px solid var(--rule);
+            }
+            tbody tr {
+                border-bottom: 1px solid var(--border);
+            }
+            th {
+                text-align: left;
+                padding: 12px 14px;
+                font-family: var(--sans);
+                font-weight: 600;
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+            }
+            td {
+                padding: 12px 14px;
+                vertical-align: top;
+            }
+            td strong {
+                font-weight: 600;
+            }
+            .center {
+                text-align: center;
+            }
+            .matrix-yes {
+                color: var(--accent);
+                font-weight: 600;
+            }
+            .matrix-indirect {
+                color: var(--secondary);
+                font-style: italic;
+                font-size: 16px;
+            }
+            .matrix-no {
+                color: var(--border);
+            }
+
+            /* --- Blockquote --- */
+            blockquote {
+                border-left: 3px solid var(--accent);
+                padding: 8px 24px;
+                margin: 22px 0;
+                font-style: italic;
+                color: var(--text);
+                max-width: 1100px;
+                font-size: 22px;
+            }
+            blockquote cite {
+                display: block;
+                font-style: normal;
+                font-size: 16px;
+                color: var(--secondary);
+                margin-top: 10px;
+                font-family: var(--sans);
+            }
+
+            /* --- Institutional logo (top-right) --- */
+            .corner-logo {
+                position: absolute;
+                top: 60px;
+                right: 100px;
+                max-height: 70px;
+                width: auto;
+                opacity: 1;
+            }
+
+            /* --- Slide number + footer --- */
+            .slide-number {
+                position: absolute;
+                bottom: 60px;
+                right: 130px;
+                font-family: var(--sans);
+                font-size: 15px;
+                color: var(--secondary);
+                letter-spacing: 0.08em;
+            }
+            .slide-footer {
+                position: absolute;
+                bottom: 60px;
+                left: 130px;
+                font-family: var(--sans);
+                font-size: 15px;
+                color: var(--secondary);
+                letter-spacing: 0.08em;
+            }
+
+            /* --- Cover slide --- */
+            .cover.active {
+                justify-content: center;
+            }
+            .cover h1 {
+                font-size: 60px;
+                line-height: 1.1;
+                max-width: 1240px;
+                margin-bottom: 18px;
+            }
+            .cover h2 {
+                font-size: 28px;
+                font-style: italic;
+                max-width: 1240px;
+                margin-bottom: 50px;
+            }
+            .cover .meta {
+                font-family: var(--sans);
+                font-size: 20px;
+                color: var(--secondary);
+                line-height: 1.75;
+                padding-top: 26px;
+                border-top: 1px solid var(--border);
+                max-width: 900px;
+            }
+            .cover .meta strong {
+                color: var(--text);
+                font-weight: 600;
+            }
+
+            /* --- Section dividers (quiet, centered) --- */
+            .divider.active {
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+            .divider .section-label {
+                font-size: 13px;
+                letter-spacing: 0.24em;
+                color: var(--secondary);
+                margin-bottom: 28px;
+            }
+            .divider h1 {
+                font-size: 56px;
+                font-family: var(--serif);
+                font-weight: 400;
+                letter-spacing: -0.005em;
+                line-height: 1.15;
+                margin: 0 auto 22px;
+                max-width: 1100px;
+            }
+            .divider h2 {
+                font-size: 22px;
+                font-style: italic;
+                font-family: var(--serif);
+                font-weight: 400;
+                color: var(--secondary);
+                max-width: 900px;
+                margin: 0 auto;
+            }
+            .divider .title-rule {
+                margin: 12px auto 28px;
+            }
+
+            /* --- Hook slide (slide 2: How this work began) --- */
+            .hook.active {
+                justify-content: center;
+                align-items: flex-start;
+            }
+            .hook h1 {
+                font-size: 50px;
+                margin-bottom: 28px;
+            }
+            .hook .hook-line {
+                font-family: var(--serif);
+                font-style: italic;
+                font-size: 30px;
+                color: var(--secondary);
+                max-width: 1100px;
+                line-height: 1.4;
+            }
+
+            /* --- Fill callouts (visible placeholders for open H0/H1/H2/H3) --- */
+            .fill-callout {
+                background: var(--fill-bg);
+                border-left: 4px solid var(--fill-border);
+                color: var(--fill-text);
+                padding: 14px 20px;
+                margin: 16px 0;
+                font-family: var(--sans);
+                font-size: 16px;
+                line-height: 1.5;
+                max-width: 1100px;
+                border-radius: 2px;
+            }
+            .fill-callout .fill-tag {
+                display: inline-block;
+                background: var(--fill-border);
+                color: white;
+                font-weight: 600;
+                font-size: 12px;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                padding: 3px 8px;
+                border-radius: 2px;
+                margin-right: 10px;
+                vertical-align: 2px;
+            }
+            .fill-callout strong {
+                color: var(--fill-text);
+            }
+
+            /* --- Evidence link (Google Drive affordances) --- */
+            .evidence-link {
+                display: inline-block;
+                font-family: var(--sans);
+                font-size: 15px;
+                color: var(--accent);
+                text-decoration: none;
+                padding: 6px 12px;
+                margin: 10px 12px 14px 0;
+                border: 1px solid var(--accent);
+                border-radius: 3px;
+                transition: background 0.15s;
+                letter-spacing: 0.02em;
+            }
+            .evidence-link:hover {
+                background: var(--accent-soft);
+            }
+            .evidence-link::after {
+                content: " ↗";
+                opacity: 0.7;
+            }
+
+            /* --- Diagrams (SVG inline) --- */
+            .diagram {
+                margin: 14px auto 8px;
+                width: 100%;
+                max-width: 1280px;
+                text-align: center;
+            }
+            .diagram svg {
+                max-width: 100%;
+                height: auto;
+            }
+            /* slide 10 fractal-scaling diagram is tall (aspect ~0.577).
+               Compact the header on that slide and cap the diagram by
+               height so it fills as much width as the chrome allows while
+               staying centered, symmetric, and clear of the footer. */
+            .s-fractal {
+                padding-top: 44px;
+                padding-bottom: 44px;
+            }
+            .s-fractal .section-label {
+                margin-bottom: 8px;
+            }
+            .s-fractal h1 {
+                margin-bottom: 6px;
+            }
+            .s-fractal .title-rule {
+                margin: 6px 0 16px 0;
+            }
+            .s-fractal .diagram {
+                margin: 4px auto 4px;
+            }
+            .diagram-fit svg {
+                max-height: 660px;
+            }
+            .diagram .caption {
+                font-family: var(--sans);
+                font-size: 14px;
+                color: var(--secondary);
+                margin-top: 8px;
+                letter-spacing: 0.04em;
+            }
+
+            /* --- Stat cards (slide 10 dashboard) --- */
+            .stat-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 18px;
+                margin: 20px 0 24px;
+                width: 100%;
+                max-width: 1280px;
+            }
+            .stat-card {
+                border: 1px solid var(--border);
+                padding: 20px 22px;
+                background: var(--bg);
+            }
+            .stat-card .stat-value {
+                font-family: var(--sans);
+                font-size: 38px;
+                font-weight: 600;
+                color: var(--accent);
+                line-height: 1.1;
+                margin-bottom: 6px;
+            }
+            .stat-card .stat-label {
+                font-family: var(--sans);
+                font-size: 13px;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: var(--secondary);
+            }
+            .latency-strip {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1.4fr;
+                border: 1px solid var(--border);
+                margin: 8px 0 18px;
+                width: 100%;
+                max-width: 1280px;
+            }
+            .latency-cell {
+                padding: 16px 22px;
+                border-right: 1px solid var(--border);
+            }
+            .latency-cell:last-child {
+                border-right: none;
+                background: var(--accent-soft);
+            }
+            .latency-cell .latency-value {
+                font-family: var(--sans);
+                font-size: 30px;
+                font-weight: 600;
+                color: var(--text);
+                line-height: 1.1;
+            }
+            .latency-cell:last-child .latency-value {
+                color: var(--accent);
+            }
+            .latency-cell .latency-label {
+                font-family: var(--sans);
+                font-size: 13px;
+                color: var(--secondary);
+                margin-top: 4px;
+                letter-spacing: 0.04em;
+            }
+            .latency-cell .latency-tag {
+                font-family: var(--sans);
+                font-size: 11px;
+                color: var(--accent);
+                text-transform: uppercase;
+                letter-spacing: 0.12em;
+                margin-top: 6px;
+                font-weight: 600;
+            }
+
+            /* --- Trajectory cards (slide 3 timeline) --- */
+            .trajectory-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 14px;
+                margin: 18px 0 22px;
+                width: 100%;
+                max-width: 1340px;
+            }
+            .trajectory-card {
+                border: 1px solid var(--border);
+                padding: 22px 20px;
+                background: var(--bg);
+                position: relative;
+            }
+            .trajectory-card .traj-num {
+                font-family: var(--sans);
+                font-size: 13px;
+                color: var(--accent);
+                letter-spacing: 0.14em;
+                margin-bottom: 10px;
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+            .trajectory-card .traj-city {
+                font-family: var(--sans);
+                font-size: 22px;
+                font-weight: 600;
+                color: var(--text);
+                line-height: 1.15;
+                margin-bottom: 8px;
+                letter-spacing: -0.005em;
+            }
+            .trajectory-card .traj-phase {
+                font-family: var(--serif);
+                font-size: 16px;
+                font-style: italic;
+                color: var(--secondary);
+                line-height: 1.45;
+            }
+            .trajectory-card .traj-years {
+                font-family: var(--sans);
+                font-size: 12px;
+                color: var(--secondary);
+                margin-top: 12px;
+                letter-spacing: 0.04em;
+            }
+
+            /* --- Two-column layout (used in some slides) --- */
+            .two-col {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 36px;
+                width: 100%;
+                max-width: 1280px;
+            }
+
+            /* --- Final slide --- */
+            .final h1 {
+                font-size: 44px;
+            }
+            .final .contact {
+                margin-top: 22px;
+                padding-top: 18px;
+                border-top: 1px solid var(--border);
+                font-family: var(--sans);
+                font-size: 17px;
+                line-height: 1.6;
+            }
+            .final .contact .label {
+                font-size: 13px;
+                text-transform: uppercase;
+                letter-spacing: 0.16em;
+                color: var(--accent);
+                font-weight: 500;
+                display: block;
+                margin-bottom: 8px;
+            }
+            .final .contact strong {
+                font-weight: 600;
+                font-size: 19px;
+            }
+
+            /* --- Nav hint --- */
+            .nav-hint {
+                position: fixed;
+                bottom: 14px;
+                right: 18px;
+                font-family: var(--sans);
+                font-size: 11px;
+                color: var(--secondary);
+                opacity: 0.5;
+                letter-spacing: 0.05em;
+                z-index: 100;
+                pointer-events: none;
+            }
+
+            /* --- Print --- */
+            @media print {
+                @page {
+                    size: 1600px 900px;
+                    margin: 0;
+                }
+                html,
+                body {
+                    background: white !important;
+                    width: 1600px;
+                    height: 900px;
+                    overflow: visible !important;
+                }
+                body {
+                    --scale: 1;
+                }
+                .slide {
+                    display: flex !important;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    position: relative !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    transform: none !important;
+                    page-break-after: always;
+                    box-shadow: none;
+                    width: 1600px;
+                    height: 900px;
+                }
+                .cover.active,
+                .divider.active {
+                    justify-content: center;
+                }
+                .nav-hint {
+                    display: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- ============ 1 · COVER ============ -->
+        <section class="slide cover active">
+            <div class="section-label">Williams meeting · June 5, 2026</div>
+            <h1>Applied research in complexity science and AI</h1>
+            <h2>
+                A research line at Tec de Monterrey, School of Government and
+                Public Transformation
+            </h2>
+            <div class="meta">
+                <strong>Edgar Barroso</strong> · Research Professor, EGTP<br />
+                Tec de Monterrey<br />
+                June 5, 2026
+            </div>
+        </section>
+
+        <!-- ============ 2 · HOOK · THE ELEPHANT IN THE ROOM ============ -->
+        <section class="slide hook">
+            <div class="section-label">Opening</div>
+            <h1>The elephant in the room</h1>
+            <div class="title-rule"></div>
+            <div class="hook-line">
+                <em
+                    >How a composer ended up at a School of Government, doing
+                    complexity science and AI.</em
+                >
+            </div>
+        </section>
+
+        <!-- ============ 3 · TRAJECTORY · TIMELINE OVERVIEW ============ -->
+        <section class="slide">
+            <div class="section-label">Trajectory</div>
+            <h1>A non-conventional path to a structural problem</h1>
+            <div class="title-rule"></div>
+            <p style="max-width: 1340px">
+                Four phases — from classical music to applied research in
+                public-sector AI.
+            </p>
+
+            <div class="trajectory-grid">
+                <div class="trajectory-card">
+                    <div class="traj-num">01 · Music Composition</div>
+                    <div class="traj-city">Guanajuato</div>
+                    <div class="traj-phase">Classical music</div>
+                    <div class="traj-years">Formative years</div>
+                </div>
+                <div class="trajectory-card">
+                    <div class="traj-num">
+                        02 · Programming and Algorithm &amp; Training
+                    </div>
+                    <div class="traj-city">Barcelona</div>
+                    <div class="traj-phase">Digital arts</div>
+                    <div class="traj-years">MA · Universitat Pompeu Fabra</div>
+                </div>
+                <div class="trajectory-card">
+                    <div class="traj-num">03 · "New" Complexity in Music</div>
+                    <div class="traj-city">Boston</div>
+                    <div class="traj-phase">Music &amp; technology</div>
+                    <div class="traj-years">2007–2014 · Harvard PhD</div>
+                </div>
+                <div class="trajectory-card">
+                    <div class="traj-num">
+                        04 · Transdisciplinary &amp; AI ·
+                    </div>
+                    <div class="traj-city">Zürich → México</div>
+                    <div class="traj-phase">
+                        Research, technology, public entrepreneurship
+                    </div>
+                    <div class="traj-years">
+                        2014– · ICST postdoc → Tec EGTP
+                    </div>
+                </div>
+            </div>
+
+            <a
+                href="https://docs.google.com/presentation/d/1ftdznKJJeyszoGk_wMa6dP5iPdBEpJExhhv9tyfNIgM/edit?slide=id.g36c019eb4d0_3_11#slide=id.g36c019eb4d0_3_11"
+                target="_blank"
+                rel="noopener"
+                class="evidence-link"
+                >Trajectory deck — Google Drive</a
+            >
+
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 4 · TRAJECTORY · MÉXICO · TEC EGTP · LET ============ -->
+        <section class="slide">
+            <div class="section-label">Trajectory · México</div>
+            <h1>
+                Tec EGTP — Faculty for public entrepreneurship and emergent
+                technologies (2015)
+            </h1>
+            <div class="title-rule"></div>
+
+            <div class="diagram">
+                <svg
+                    viewBox="0 0 1280 460"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                    aria-label="Continuity timeline emphasizing HA birth as concept 2018 and spinoff 2024"
+                >
+                    <!-- Bet annotation -->
+                    <g transform="translate(640, 10)">
+                        <rect
+                            x="-340"
+                            y="0"
+                            width="680"
+                            height="74"
+                            rx="4"
+                            fill="#FAFAF7"
+                            stroke="#D6D3CC"
+                        />
+                        <text
+                            x="0"
+                            y="30"
+                            text-anchor="middle"
+                            font-family="Inter,sans-serif"
+                            font-size="19"
+                            font-weight="600"
+                            fill="#1A3A5C"
+                        >
+                            The bet on emergent technologies — taken 2015
+                        </text>
+                        <text
+                            x="0"
+                            y="58"
+                            text-anchor="middle"
+                            font-family="Inter,sans-serif"
+                            font-size="16"
+                            fill="#5A5A5A"
+                            font-style="italic"
+                        >
+                            data science + ML to evolve into agentic AI fractal
+                            network
+                        </text>
+                    </g>
+                    <!-- Tether from bet down to LET bar (clears the HA upper track) -->
+                    <line
+                        x1="640"
+                        y1="84"
+                        x2="640"
+                        y2="260"
+                        stroke="#5A5A5A"
+                        stroke-width="1.4"
+                        stroke-dasharray="5 5"
+                    />
+
+                    <!-- HA upper track ============================================ -->
+                    <!-- HA labels -->
+                    <g font-family="Inter,sans-serif" text-anchor="middle">
+                        <text
+                            x="540"
+                            y="148"
+                            font-size="18"
+                            font-weight="700"
+                            fill="#1A3A5C"
+                        >
+                            HA · concept
+                        </text>
+                        <text
+                            x="1000"
+                            y="148"
+                            font-size="18"
+                            font-weight="700"
+                            fill="#1A3A5C"
+                        >
+                            HA · spinoff
+                        </text>
+                        <text
+                            x="1140"
+                            y="148"
+                            font-size="14"
+                            fill="#5A5A5A"
+                            font-style="italic"
+                        >
+                            independent line
+                        </text>
+                    </g>
+                    <!-- HA continuation line (2024 → Today) -->
+                    <line
+                        x1="1000"
+                        y1="180"
+                        x2="1140"
+                        y2="180"
+                        stroke="#1A3A5C"
+                        stroke-width="5"
+                    />
+                    <!-- HA markers on the upper track -->
+                    <circle
+                        cx="540"
+                        cy="180"
+                        r="10"
+                        fill="#FAFAF7"
+                        stroke="#1A3A5C"
+                        stroke-width="3"
+                    />
+                    <circle
+                        cx="1000"
+                        cy="180"
+                        r="13"
+                        fill="#1A3A5C"
+                        stroke="#FAFAF7"
+                        stroke-width="2.5"
+                    />
+                    <circle cx="1140" cy="180" r="10" fill="#1A3A5C" />
+                    <!-- Tethers from HA markers down to LET bar top (showing 2018 and 2024 anchor points) -->
+                    <line
+                        x1="540"
+                        y1="190"
+                        x2="540"
+                        y2="260"
+                        stroke="#1A3A5C"
+                        stroke-width="1.4"
+                        stroke-dasharray="3 4"
+                    />
+                    <line
+                        x1="1000"
+                        y1="193"
+                        x2="1000"
+                        y2="260"
+                        stroke="#1A3A5C"
+                        stroke-width="1.4"
+                        stroke-dasharray="3 4"
+                    />
+
+                    <!-- LET decade bar =========================================== -->
+                    <rect
+                        x="300"
+                        y="260"
+                        width="700"
+                        height="60"
+                        fill="#EDEAE3"
+                        stroke="#1A3A5C"
+                        stroke-width="2"
+                    />
+                    <text
+                        x="650"
+                        y="288"
+                        text-anchor="middle"
+                        font-family="Inter,sans-serif"
+                        font-size="20"
+                        font-weight="600"
+                        fill="#1A1A1A"
+                    >
+                        LET — 9 years · 5 sectors
+                    </text>
+                    <text
+                        x="650"
+                        y="310"
+                        text-anchor="middle"
+                        font-family="Inter,sans-serif"
+                        font-size="15"
+                        fill="#5A5A5A"
+                        font-style="italic"
+                    >
+                        Laboratorio de Emprendimiento y Transformación
+                    </text>
+
+                    <!-- Main continuous rail ==================================== -->
+                    <line
+                        x1="80"
+                        y1="350"
+                        x2="1200"
+                        y2="350"
+                        stroke="#1A3A5C"
+                        stroke-width="2"
+                    />
+                    <!-- Endpoint dots on the rail -->
+                    <circle cx="160" cy="350" r="10" fill="#1A3A5C" />
+                    <circle cx="1140" cy="350" r="10" fill="#1A3A5C" />
+
+                    <!-- Year labels -->
+                    <g
+                        font-family="Inter,sans-serif"
+                        font-size="20"
+                        fill="#1A1A1A"
+                        text-anchor="middle"
+                    >
+                        <text x="160" y="386" font-weight="600">2011</text>
+                        <text x="300" y="386" font-weight="600">2015</text>
+                        <text x="540" y="386" font-weight="700" fill="#1A3A5C">
+                            2018
+                        </text>
+                        <text x="1000" y="386" font-weight="700" fill="#1A3A5C">
+                            2024
+                        </text>
+                        <text x="1140" y="386" font-weight="600">Today</text>
+                    </g>
+                    <!-- Card labels under years -->
+                    <g
+                        font-family="Inter,sans-serif"
+                        font-size="15"
+                        fill="#5A5A5A"
+                        text-anchor="middle"
+                    >
+                        <text x="160" y="416">Antena Labs</text>
+                        <text x="300" y="416">Tec EGTP · LET founded</text>
+                        <text x="540" y="416">HA emerges as concept</text>
+                        <text x="1000" y="416">HA spinoff · independent</text>
+                        <text x="1140" y="416">This proposal</text>
+                    </g>
+                </svg>
+                <div class="caption">
+                    HA became an independent spinoff in 2024. This proposal
+                    funds the <strong>applied research at Tec</strong> that
+                    produced it — a line that continues today.
+                </div>
+            </div>
+
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 7 · TRAJECTORY · THE LESSON ============ -->
+        <section class="slide">
+            <div class="section-label">Trajectory · the lesson</div>
+            <h1>Across nine years, the same lesson kept surfacing</h1>
+            <div class="title-rule"></div>
+
+            <!-- Empirical breadth: 5 sector chips -->
+            <div
+                style="
+                    font-size: 14px;
+                    color: #5a5a5a;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    margin: 6px 0 12px 0;
+                "
+            >
+                Across five sectors
+            </div>
+            <div
+                style="
+                    display: flex;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                    margin: 0 0 30px 0;
+                "
+            >
+                <span
+                    style="
+                        background: #edeae3;
+                        border: 1px solid #d6d3cc;
+                        border-radius: 18px;
+                        padding: 8px 20px;
+                        font-family: &quot;Inter&quot;, sans-serif;
+                        font-size: 17px;
+                        color: #1a1a1a;
+                    "
+                    >Federal agencies</span
+                >
+                <span
+                    style="
+                        background: #edeae3;
+                        border: 1px solid #d6d3cc;
+                        border-radius: 18px;
+                        padding: 8px 20px;
+                        font-family: &quot;Inter&quot;, sans-serif;
+                        font-size: 17px;
+                        color: #1a1a1a;
+                    "
+                    >State governments</span
+                >
+                <span
+                    style="
+                        background: #edeae3;
+                        border: 1px solid #d6d3cc;
+                        border-radius: 18px;
+                        padding: 8px 20px;
+                        font-family: &quot;Inter&quot;, sans-serif;
+                        font-size: 17px;
+                        color: #1a1a1a;
+                    "
+                    >International organizations</span
+                >
+                <span
+                    style="
+                        background: #edeae3;
+                        border: 1px solid #d6d3cc;
+                        border-radius: 18px;
+                        padding: 8px 20px;
+                        font-family: &quot;Inter&quot;, sans-serif;
+                        font-size: 17px;
+                        color: #1a1a1a;
+                    "
+                    >Higher education</span
+                >
+                <span
+                    style="
+                        background: #edeae3;
+                        border: 1px solid #d6d3cc;
+                        border-radius: 18px;
+                        padding: 8px 20px;
+                        font-family: &quot;Inter&quot;, sans-serif;
+                        font-size: 17px;
+                        color: #1a1a1a;
+                    "
+                    >Enterprise</span
+                >
+            </div>
+
+            <!-- The diagnosis -->
+            <div
+                style="
+                    background: #fafaf7;
+                    border-left: 4px solid #1a3a5c;
+                    padding: 18px 26px;
+                    margin: 0 0 30px 0;
+                    max-width: 1240px;
+                "
+            >
+                <div
+                    style="
+                        font-family: &quot;Inter&quot;, sans-serif;
+                        font-size: 26px;
+                        font-weight: 600;
+                        color: #1a3a5c;
+                        margin-bottom: 6px;
+                    "
+                >
+                    The hard part was complexity itself
+                </div>
+                <div
+                    style="font-size: 17px; color: #5a5a5a; font-style: italic"
+                >
+                    abundant information · many interdependent parts · evolving
+                    across time · many actors · multiple horizons · multiple
+                    forms of knowledge
+                </div>
+            </div>
+
+            <!-- What it called for -->
+            <div
+                style="
+                    border: 2px solid #1a3a5c;
+                    background: #edeae3;
+                    padding: 22px 28px;
+                    max-width: 1240px;
+                "
+            >
+                <div
+                    style="
+                        font-family: &quot;Inter&quot;, sans-serif;
+                        font-size: 13px;
+                        color: #1a3a5c;
+                        text-transform: uppercase;
+                        letter-spacing: 0.08em;
+                        margin-bottom: 12px;
+                    "
+                >
+                    What it called for
+                </div>
+                <div
+                    style="
+                        font-family: &quot;Inter&quot;, sans-serif;
+                        font-size: 30px;
+                        font-weight: 600;
+                        color: #1a1a1a;
+                        line-height: 1.15;
+                    "
+                >
+                    An architecture that makes information compatible
+                </div>
+                <div
+                    style="
+                        font-size: 17px;
+                        color: #5a5a5a;
+                        font-style: italic;
+                        margin-top: 10px;
+                    "
+                >
+                    a shared structure humans and machines can both understand
+                    and act on — so that many actors, horizons, and forms of
+                    knowledge stay coordinated
+                </div>
+            </div>
+
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 4 · THE STRUCTURAL PROBLEM ============ -->
+        <section class="slide">
+            <div class="section-label">The problem</div>
+            <h1>The structural problem: increasing complexity</h1>
+            <div class="title-rule"></div>
+
+            <!-- 2x2 grid of complexity facets -->
+            <div
+                style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    grid-template-rows: 1fr 1fr;
+                    gap: 26px;
+                    max-width: 1240px;
+                    min-height: 540px;
+                    margin: 28px 0 0 0;
+                "
+            >
+                <div
+                    style="
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 20px 26px;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 13px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 8px;
+                        "
+                    >
+                        01 · Time
+                    </div>
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 22px;
+                            font-weight: 600;
+                            color: #1a3a5c;
+                            margin-bottom: 8px;
+                        "
+                    >
+                        Temporal misalignment
+                    </div>
+                    <div
+                        style="
+                            font-size: 16px;
+                            color: #1a1a1a;
+                            line-height: 1.4;
+                        "
+                    >
+                        Long-term strategy detached from short-term operations.
+                    </div>
+                </div>
+
+                <div
+                    style="
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 20px 26px;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 13px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 8px;
+                        "
+                    >
+                        02 · Concurrency
+                    </div>
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 22px;
+                            font-weight: 600;
+                            color: #1a3a5c;
+                            margin-bottom: 8px;
+                        "
+                    >
+                        Simultaneous complexity
+                    </div>
+                    <div
+                        style="
+                            font-size: 16px;
+                            color: #1a1a1a;
+                            line-height: 1.4;
+                        "
+                    >
+                        Many parallel activities and data flows to coordinate at
+                        once.
+                    </div>
+                </div>
+
+                <div
+                    style="
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 20px 26px;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 13px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 8px;
+                        "
+                    >
+                        03 · Coherence
+                    </div>
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 22px;
+                            font-weight: 600;
+                            color: #1a3a5c;
+                            margin-bottom: 8px;
+                        "
+                    >
+                        Data &amp; information coherence at scale
+                    </div>
+                    <div
+                        style="
+                            font-size: 16px;
+                            color: #1a1a1a;
+                            line-height: 1.4;
+                        "
+                    >
+                        Qualitative, quantitative, and tacit knowledge must stay
+                        coherent as collaboration grows across teams and
+                        stakeholders.
+                    </div>
+                </div>
+
+                <div
+                    style="
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 20px 26px;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 13px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 8px;
+                        "
+                    >
+                        04 · Governance
+                    </div>
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 22px;
+                            font-weight: 600;
+                            color: #1a3a5c;
+                            margin-bottom: 8px;
+                        "
+                    >
+                        Hybrid intelligence under human authority
+                    </div>
+                    <div
+                        style="
+                            font-size: 16px;
+                            color: #1a1a1a;
+                            line-height: 1.4;
+                        "
+                    >
+                        Integrate machine judgment with human decision-making in
+                        ways that remain governable as the system scales.
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 6b · THE SHIFT · CONTEXT + GOVERNANCE ============ -->
+        <section class="slide">
+            <div class="section-label">The shift</div>
+            <h1>As AI models commoditize, the advantage moves to context and governance</h1>
+            <div class="title-rule"></div>
+
+            <div
+                style="
+                    font-size: 19px;
+                    color: #1a1a1a;
+                    line-height: 1.45;
+                    max-width: 1180px;
+                    margin: 24px 0 6px 0;
+                "
+            >
+                AI model capability is converging toward a commodity. Durable
+                advantage now comes from what an organization builds around it:
+            </div>
+
+            <!-- 2-card grid: proprietary context + governed interaction -->
+            <div
+                style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr 1fr;
+                    gap: 22px;
+                    max-width: 1240px;
+                    margin: 22px 0 0 0;
+                "
+            >
+                <div
+                    style="
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 22px 28px;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 13px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 8px;
+                        "
+                    >
+                        What only you have
+                    </div>
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 22px;
+                            font-weight: 600;
+                            color: #1a3a5c;
+                            margin-bottom: 10px;
+                        "
+                    >
+                        Proprietary, original data
+                    </div>
+                    <div
+                        style="
+                            font-size: 16px;
+                            color: #1a1a1a;
+                            line-height: 1.45;
+                        "
+                    >
+                        The most detailed context a system can have: data that
+                        only your organization or your people hold, outside any
+                        model's training set. It is what lets a general model
+                        act on a specific reality.
+                    </div>
+                </div>
+
+                <div
+                    style="
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 22px 28px;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 13px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 8px;
+                        "
+                    >
+                        How it works together
+                    </div>
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 22px;
+                            font-weight: 600;
+                            color: #1a3a5c;
+                            margin-bottom: 10px;
+                        "
+                    >
+                        Coherent, scalable human–machine interaction
+                    </div>
+                    <div
+                        style="
+                            font-size: 16px;
+                            color: #1a1a1a;
+                            line-height: 1.45;
+                        "
+                    >
+                        A system where people and machines work together,
+                        coherent and governed as it grows, so capability becomes
+                        dependable action at institutional scale.
+                    </div>
+                </div>
+
+                <div
+                    style="
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 22px 28px;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 13px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 8px;
+                        "
+                    >
+                        What you build on it
+                    </div>
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 22px;
+                            font-weight: 600;
+                            color: #1a3a5c;
+                            margin-bottom: 10px;
+                        "
+                    >
+                        Software built on top
+                    </div>
+                    <div
+                        style="
+                            font-size: 16px;
+                            color: #1a1a1a;
+                            line-height: 1.45;
+                        "
+                    >
+                        On top of that data and that interaction, you build
+                        software shaped to your own reality and owned by you.
+                        This is where a commodity model turns into a specific
+                        advantage.
+                    </div>
+                </div>
+            </div>
+
+            <div
+                style="
+                    background: #edeae3;
+                    border-left: 4px solid #1a3a5c;
+                    padding: 18px 26px;
+                    margin: 28px 0 0 0;
+                    max-width: 1240px;
+                    font-size: 18px;
+                    color: #1a1a1a;
+                    line-height: 1.45;
+                "
+            >
+                Building this so it stays coherent across time and scale is an
+                architectural problem — the subject of what follows.
+            </div>
+
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 7c · FUNDAMENTAL · THE HORIZON ============ -->
+        <section class="slide">
+            <div class="section-label">The architecture</div>
+            <h1>From a current state to a target state</h1>
+            <div class="title-rule"></div>
+            <div class="diagram">
+                <svg width="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 130"
+                  font-family="Inter, sans-serif">
+                  <defs>
+                    <marker id="harr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                      <polygon points="0,0.5 10,3.5 0,6.5" fill="#000"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Current State (far left) -->
+                  <rect x="10" y="15" width="160" height="70" rx="3" fill="#fafaf7" stroke="#000" stroke-width="1.3"/>
+                  <text x="90" y="38" text-anchor="middle" font-size="15" font-weight="bold" fill="#000">Current State</text>
+                  <text x="90" y="56" text-anchor="middle" font-size="14" fill="#000" font-style="italic">&#x03C3;(t)</text>
+                  <text x="90" y="73" text-anchor="middle" font-size="10" fill="#000" font-style="italic">Diagnosis</text>
+
+                  <!-- Target State (far right) -->
+                  <rect x="530" y="15" width="160" height="70" rx="3" fill="#fafaf7" stroke="#000" stroke-width="1.3"/>
+                  <text x="610" y="38" text-anchor="middle" font-size="15" font-weight="bold" fill="#000">Target State</text>
+                  <text x="610" y="56" text-anchor="middle" font-size="14" fill="#000" font-style="italic">&#x03C3;&#x0302;(t)</text>
+                  <text x="610" y="68" text-anchor="middle" font-size="10" fill="#000" font-style="italic">Strategy declares;</text>
+                  <text x="610" y="80" text-anchor="middle" font-size="10" fill="#000" font-style="italic">context interprets</text>
+
+                  <!-- Horizon arrow -->
+                  <line x1="175" y1="50" x2="525" y2="50" stroke="#000" stroke-width="1.4" marker-end="url(#harr)"/>
+
+                  <!-- Horizon label above arrow -->
+                  <text x="350" y="40" text-anchor="middle" font-size="14" fill="#000" font-style="italic">&#x0394;<tspan baseline-shift="sub" font-size="10">H</tspan>(t)</text>
+
+                  <!-- Coordination label below arrow -->
+                  <text x="350" y="70" text-anchor="middle" font-size="11" fill="#000">HA coordinates this trajectory</text>
+
+                  <!-- Time axis annotation -->
+                  <text x="350" y="105" text-anchor="middle" font-size="12" fill="#000"
+                    font-style="italic" letter-spacing="3">TIME</text>
+
+                </svg>
+                <div class="caption">
+                    HA coordinates the trajectory from where an organization is
+                    to where it intends to be.
+                </div>
+            </div>
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 7b · FUNDAMENTAL · TWO AXES ============ -->
+        <section class="slide">
+            <div class="section-label">The architecture</div>
+            <h1>Two axes: time and simultaneous complexity</h1>
+            <div class="title-rule"></div>
+            <div class="diagram">
+                <svg width="100%" xmlns="http://www.w3.org/2000/svg" viewBox="95 0 810 280" font-family="Inter, sans-serif">
+                  <defs>
+                    <marker id="ax" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                      <polygon points="0,0.5 10,3.5 0,6.5" fill="#000"/>
+                    </marker>
+                    <marker id="ax-r" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                      <polygon points="10,0.5 0,3.5 10,6.5" fill="#000"/>
+                    </marker>
+                  </defs>
+
+                  <!-- ================================================================ -->
+                  <!--  COLUMN HEADERS                                                  -->
+                  <!-- ================================================================ -->
+                  <text x="290" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#000">Past</text>
+                  <text x="290" y="55" text-anchor="middle" font-size="11" fill="#000" font-style="italic">retrospective</text>
+
+                  <text x="520" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#000">Present</text>
+                  <text x="520" y="55" text-anchor="middle" font-size="11" fill="#000" font-style="italic">active now</text>
+
+                  <text x="740" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#000">Future</text>
+                  <text x="740" y="55" text-anchor="middle" font-size="11" fill="#000" font-style="italic">prospective</text>
+
+                  <!-- ================================================================ -->
+                  <!--  AXES                                                            -->
+                  <!-- ================================================================ -->
+
+                  <!-- Horizontal: TIME -->
+                  <line x1="150" y1="72" x2="810" y2="72" stroke="#000" stroke-width="1.4" marker-end="url(#ax)" marker-start="url(#ax-r)"/>
+                  <text x="825" y="77" text-anchor="start" font-size="14" font-weight="bold" fill="#000">TIME</text>
+
+                  <!-- Vertical: SIMULTANEOUS COMPLEXITY (no arrowhead) -->
+                  <line x1="150" y1="15" x2="150" y2="270" stroke="#000" stroke-width="1.2"/>
+
+                  <!-- Vertical axis labels — plenty of room -->
+                  <text x="110" y="170" text-anchor="middle" font-size="13" fill="#000" font-weight="bold" letter-spacing="1"
+                    transform="rotate(-90,110,170)">SIMULTANEOUS COMPLEXITY</text>
+                  <text x="128" y="170" text-anchor="middle" font-size="10" fill="#000" font-style="italic"
+                    transform="rotate(-90,128,170)">organizational information</text>
+
+                  <!-- ================================================================ -->
+                  <!--  COLUMN DIVIDERS                                                 -->
+                  <!-- ================================================================ -->
+                  <line x1="405" y1="25" x2="405" y2="265" stroke="#000" stroke-width="0.5"/>
+                  <line x1="635" y1="25" x2="635" y2="265" stroke="#000" stroke-width="0.5"/>
+
+                  <!-- ================================================================ -->
+                  <!--  DESCRIPTIONS                                                    -->
+                  <!-- ================================================================ -->
+
+                  <text x="290" y="105" text-anchor="middle" font-size="11" fill="#000">Analyzes past experiences, data,</text>
+                  <text x="290" y="120" text-anchor="middle" font-size="11" fill="#000">and institutional knowledge to inform</text>
+                  <text x="290" y="135" text-anchor="middle" font-size="11" fill="#000">decisions in the present. Includes</text>
+                  <text x="290" y="150" text-anchor="middle" font-size="11" fill="#000">lessons learned, path dependencies,</text>
+                  <text x="290" y="165" text-anchor="middle" font-size="11" fill="#000">inherited commitments, accumulated</text>
+                  <text x="290" y="180" text-anchor="middle" font-size="11" fill="#000">evidence, and prior decisions that</text>
+                  <text x="290" y="195" text-anchor="middle" font-size="11" fill="#000">continue to shape coordination.</text>
+
+                  <text x="520" y="105" text-anchor="middle" font-size="11" fill="#000">Identifies and addresses the most</text>
+                  <text x="520" y="120" text-anchor="middle" font-size="11" fill="#000">pressing issues in real time.</text>
+                  <text x="520" y="135" text-anchor="middle" font-size="11" fill="#000">Operational realities, immediate</text>
+                  <text x="520" y="150" text-anchor="middle" font-size="11" fill="#000">constraints, active signals, and the</text>
+                  <text x="520" y="165" text-anchor="middle" font-size="11" fill="#000">tensions the organization can</text>
+                  <text x="520" y="180" text-anchor="middle" font-size="11" fill="#000">currently perceive, decide upon,</text>
+                  <text x="520" y="195" text-anchor="middle" font-size="11" fill="#000">and act on in this moment.</text>
+
+                  <text x="740" y="105" text-anchor="middle" font-size="11" fill="#000">Plans strategically with past data</text>
+                  <text x="740" y="120" text-anchor="middle" font-size="11" fill="#000">to mitigate future risks and seize</text>
+                  <text x="740" y="135" text-anchor="middle" font-size="11" fill="#000">opportunities. The desired state</text>
+                  <text x="740" y="150" text-anchor="middle" font-size="11" fill="#000">being pursued, commitments already</text>
+                  <text x="740" y="165" text-anchor="middle" font-size="11" fill="#000">declared, and the implications of</text>
+                  <text x="740" y="180" text-anchor="middle" font-size="11" fill="#000">current action for what comes next.</text>
+
+                </svg>
+                <div class="caption">
+                    Every dimension is read across past, present, and future —
+                    and against everything pressing at once.
+                </div>
+            </div>
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 7 · WHAT HA IS · SIX DIMENSIONS ============ -->
+        <section class="slide">
+            <div class="section-label">The architecture</div>
+            <h1>Horizons Architecture: six dimensions for any complex endeavor</h1>
+            <div class="title-rule"></div>
+
+            <div
+                style="
+                    font-size: 18px;
+                    color: #5a5a5a;
+                    font-style: italic;
+                    margin: 8px 0 6px 0;
+                    max-width: 1340px;
+                "
+            >
+                One structure organizes an organization's work along six standing
+                dimensions — the same six at every scale.
+            </div>
+
+            <div class="diagram">
+                <svg
+                    viewBox="0 0 1240 520"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                    aria-label="The six dimensions of Horizons Architecture around one central structure"
+                >
+                    <g stroke="#c9c4b8" stroke-width="1.4">
+                        <line x1="548" y1="218" x2="432" y2="100" />
+                        <line x1="528" y1="260" x2="432" y2="260" />
+                        <line x1="548" y1="302" x2="432" y2="420" />
+                        <line x1="692" y1="218" x2="808" y2="100" />
+                        <line x1="712" y1="260" x2="808" y2="260" />
+                        <line x1="692" y1="302" x2="808" y2="420" />
+                    </g>
+                    <circle cx="620" cy="260" r="92" fill="#fafaf7" stroke="#1a3a5c" stroke-width="2" />
+                    <text x="620" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="18" font-weight="600" fill="#1a1a1a">Horizons</text>
+                    <text x="620" y="276" text-anchor="middle" font-family="Inter,sans-serif" font-size="18" font-weight="600" fill="#1a1a1a">Architecture</text>
+                    <g fill="#1a3a5c">
+                        <circle cx="432" cy="100" r="6" /><circle cx="432" cy="260" r="6" /><circle cx="432" cy="420" r="6" />
+                        <circle cx="808" cy="100" r="6" /><circle cx="808" cy="260" r="6" /><circle cx="808" cy="420" r="6" />
+                    </g>
+                    <g text-anchor="end" font-family="Inter,sans-serif">
+                        <text x="410" y="95" font-size="22" font-weight="600" fill="#1a3a5c">Legacy</text>
+                        <text x="410" y="118" font-size="13" fill="#5a5a5a">enduring value, direction</text>
+                        <text x="410" y="255" font-size="22" font-weight="600" fill="#1a3a5c">Learning</text>
+                        <text x="410" y="278" font-size="13" fill="#5a5a5a">knowledge, capability, training</text>
+                        <text x="410" y="415" font-size="22" font-weight="600" fill="#1a3a5c">Context</text>
+                        <text x="410" y="438" font-size="13" fill="#5a5a5a">conditions, constraints, shifts</text>
+                    </g>
+                    <g text-anchor="start" font-family="Inter,sans-serif">
+                        <text x="830" y="95" font-size="22" font-weight="600" fill="#1a3a5c">Community</text>
+                        <text x="830" y="118" font-size="13" fill="#5a5a5a">stakeholders, authority, dependencies</text>
+                        <text x="830" y="255" font-size="22" font-weight="600" fill="#1a3a5c">Technology</text>
+                        <text x="830" y="278" font-size="13" fill="#5a5a5a">infrastructures, tools, integration</text>
+                        <text x="830" y="415" font-size="22" font-weight="600" fill="#1a3a5c">Projects</text>
+                        <text x="830" y="438" font-size="13" fill="#5a5a5a">scope, resources, execution, evidence</text>
+                    </g>
+                </svg>
+                <div class="caption">
+                    Two axes hold the six together — time (past · present ·
+                    future) and simultaneous complexity — and the same structure
+                    repeats fractally at every scale.
+                </div>
+            </div>
+
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 7d · FUNDAMENTAL · FRACTAL RECURRENCE ============ -->
+        <section class="slide s-fractal">
+            <div class="section-label">The architecture</div>
+            <h1>The same structure at every scale</h1>
+            <div class="title-rule"></div>
+            <div class="diagram diagram-fit">
+                <svg width="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1450 830" font-family="Inter, sans-serif">
+                  <defs>
+                    <marker id="ah" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+                      <path d="M 0 0 L 12 6 L 0 12 z" fill="#111"/>
+                    </marker>
+                    <marker id="ah-r" viewBox="0 0 12 12" refX="1" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+                      <path d="M 12 0 L 0 6 L 12 12 z" fill="#111"/>
+                    </marker>
+                    <marker id="ahs" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+                      <path d="M 0 0 L 12 6 L 0 12 z" fill="#333"/>
+                    </marker>
+                    <marker id="ahs-r" viewBox="0 0 12 12" refX="1" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+                      <path d="M 12 0 L 0 6 L 12 12 z" fill="#333"/>
+                    </marker>
+                    <marker id="spawn" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+                      <path d="M 0 0 L 12 6 L 0 12 z" fill="#666"/>
+                    </marker>
+                    <marker id="ahf" viewBox="0 0 12 12" refX="14" refY="6" markerWidth="7" markerHeight="7" orient="auto" overflow="visible">
+                      <path d="M 0 0.5 L 12 6 L 0 11.5 z" fill="#555"/>
+                    </marker>
+                    <marker id="ahf-r" viewBox="0 0 12 12" refX="-2" refY="6" markerWidth="7" markerHeight="7" orient="auto" overflow="visible">
+                      <path d="M 12 0.5 L 0 6 L 12 11.5 z" fill="#555"/>
+                    </marker>
+                  </defs>
+
+                  <!-- ================================================================ -->
+                  <!--  ORG LEVEL                                                        -->
+                  <!-- ================================================================ -->
+                  <text x="333" y="358" text-anchor="middle" font-size="15" fill="#555" font-style="italic">Organizational Level</text>
+
+                  <rect x="40" y="399" width="86" height="34" rx="2" fill="#fafaf7" stroke="#111" stroke-width="1.4"/>
+                  <text x="83" y="421" text-anchor="middle" font-size="14" fill="#111">Legacy</text>
+                  <line x1="126" y1="416" x2="156" y2="416" stroke="#111" stroke-width="1.2" marker-end="url(#ah)" marker-start="url(#ah-r)"/>
+
+                  <rect x="156" y="399" width="86" height="34" rx="2" fill="#fafaf7" stroke="#111" stroke-width="1.4"/>
+                  <text x="199" y="421" text-anchor="middle" font-size="14" fill="#111">Community</text>
+                  <line x1="242" y1="416" x2="272" y2="416" stroke="#111" stroke-width="1.2" marker-end="url(#ah)" marker-start="url(#ah-r)"/>
+
+                  <rect x="272" y="399" width="86" height="34" rx="2" fill="#fafaf7" stroke="#111" stroke-width="1.4"/>
+                  <text x="315" y="421" text-anchor="middle" font-size="14" fill="#111">Learning</text>
+                  <line x1="358" y1="416" x2="388" y2="416" stroke="#111" stroke-width="1.2" marker-end="url(#ah)" marker-start="url(#ah-r)"/>
+
+                  <rect x="388" y="399" width="86" height="34" rx="2" fill="#fafaf7" stroke="#111" stroke-width="1.4"/>
+                  <text x="431" y="421" text-anchor="middle" font-size="14" fill="#111">Technology</text>
+                  <line x1="474" y1="416" x2="504" y2="416" stroke="#111" stroke-width="1.2" marker-end="url(#ah)" marker-start="url(#ah-r)"/>
+
+                  <rect x="504" y="399" width="86" height="34" rx="2" fill="#fafaf7" stroke="#111" stroke-width="1.4"/>
+                  <text x="547" y="421" text-anchor="middle" font-size="14" fill="#111">Context</text>
+                  <line x1="590" y1="416" x2="620" y2="416" stroke="#111" stroke-width="1.2" marker-end="url(#ah)" marker-start="url(#ah-r)"/>
+
+                  <rect x="620" y="399" width="86" height="34" rx="2" fill="#fafaf7" stroke="#111" stroke-width="1.4"/>
+                  <text x="663" y="421" text-anchor="middle" font-size="14" fill="#111">Projects</text>
+
+                  <!-- ================================================================ -->
+                  <!--  INSTANTIATION                                                    -->
+                  <!-- ================================================================ -->
+                  <path d="M 706,416 C 750,416 750,182 795,182 L 805,182" fill="none" stroke="#666" stroke-width="1.1" marker-end="url(#spawn)"/>
+                  <path d="M 706,416 L 805,416" fill="none" stroke="#666" stroke-width="1.1" marker-end="url(#spawn)"/>
+                  <path d="M 706,416 C 750,416 750,650 795,650 L 805,650" fill="none" stroke="#666" stroke-width="1.1" marker-end="url(#spawn)"/>
+
+                  <text x="753" y="361" text-anchor="middle" font-size="11" fill="#888" font-style="italic">Self-similar instantiation</text>
+
+                  <!-- ================================================================ -->
+                  <!--  PROJECT 1 (top)                                                  -->
+                  <!-- ================================================================ -->
+                  <text x="1098" y="133" text-anchor="middle" font-size="13" fill="#777" font-style="italic">Project 1</text>
+                  <rect x="805" y="143" width="586" height="74" rx="3" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="4,2.5"/>
+
+                  <rect x="820" y="168" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="858" y="186" text-anchor="middle" font-size="12" fill="#222">Legacy</text>
+                  <line x1="896" y1="182" x2="916" y2="182" stroke="#333" stroke-width="0.9" marker-end="url(#ahs)" marker-start="url(#ahs-r)"/>
+
+                  <rect x="916" y="168" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="954" y="186" text-anchor="middle" font-size="12" fill="#222">Community</text>
+                  <line x1="992" y1="182" x2="1012" y2="182" stroke="#333" stroke-width="0.9" marker-end="url(#ahs)" marker-start="url(#ahs-r)"/>
+
+                  <rect x="1012" y="168" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="1050" y="186" text-anchor="middle" font-size="12" fill="#222">Learning</text>
+                  <line x1="1088" y1="182" x2="1108" y2="182" stroke="#333" stroke-width="0.9" marker-end="url(#ahs)" marker-start="url(#ahs-r)"/>
+
+                  <rect x="1108" y="168" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="1146" y="186" text-anchor="middle" font-size="12" fill="#222">Technology</text>
+                  <line x1="1184" y1="182" x2="1204" y2="182" stroke="#333" stroke-width="0.9" marker-end="url(#ahs)" marker-start="url(#ahs-r)"/>
+
+                  <rect x="1204" y="168" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="1242" y="186" text-anchor="middle" font-size="12" fill="#222">Context</text>
+                  <line x1="1280" y1="182" x2="1300" y2="182" stroke="#333" stroke-width="0.9" marker-end="url(#ahs)" marker-start="url(#ahs-r)"/>
+
+                  <rect x="1300" y="168" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="1338" y="186" text-anchor="middle" font-size="12" fill="#222">Projects</text>
+
+                  <!-- ================================================================ -->
+                  <!--  PROJECT 2 (middle)                                               -->
+                  <!-- ================================================================ -->
+                  <text x="1098" y="367" text-anchor="middle" font-size="13" fill="#777" font-style="italic">Project 2</text>
+                  <rect x="805" y="377" width="586" height="74" rx="3" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="4,2.5"/>
+
+                  <rect x="820" y="402" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="858" y="420" text-anchor="middle" font-size="12" fill="#222">Legacy</text>
+                  <line x1="896" y1="416" x2="916" y2="416" stroke="#333" stroke-width="0.9" marker-end="url(#ahs)" marker-start="url(#ahs-r)"/>
+
+                  <rect x="916" y="402" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="954" y="420" text-anchor="middle" font-size="12" fill="#222">Community</text>
+                  <line x1="992" y1="416" x2="1012" y2="416" stroke="#333" stroke-width="0.9" marker-end="url(#ahs)" marker-start="url(#ahs-r)"/>
+
+                  <rect x="1012" y="402" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="1050" y="420" text-anchor="middle" font-size="12" fill="#222">Learning</text>
+                  <line x1="1088" y1="416" x2="1108" y2="416" stroke="#333" stroke-width="0.9" marker-end="url(#ahs)" marker-start="url(#ahs-r)"/>
+
+                  <rect x="1108" y="402" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="1146" y="420" text-anchor="middle" font-size="12" fill="#222">Technology</text>
+                  <line x1="1184" y1="416" x2="1204" y2="416" stroke="#333" stroke-width="0.9" marker-end="url(#ahs)" marker-start="url(#ahs-r)"/>
+
+                  <rect x="1204" y="402" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="1242" y="420" text-anchor="middle" font-size="12" fill="#222">Context</text>
+                  <line x1="1280" y1="416" x2="1300" y2="416" stroke="#333" stroke-width="0.9" marker-end="url(#ahs)" marker-start="url(#ahs-r)"/>
+
+                  <rect x="1300" y="402" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="1338" y="420" text-anchor="middle" font-size="12" fill="#222">Projects</text>
+
+                  <!-- ================================================================ -->
+                  <!--  PROJECT 3 (bottom)                                               -->
+                  <!-- ================================================================ -->
+                  <text x="1098" y="601" text-anchor="middle" font-size="13" fill="#777" font-style="italic">Project 3</text>
+                  <rect x="805" y="611" width="586" height="74" rx="3" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="4,2.5"/>
+
+                  <rect x="820" y="636" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="858" y="654" text-anchor="middle" font-size="12" fill="#222">Legacy</text>
+                  <line x1="896" y1="650" x2="916" y2="650" stroke="#333" stroke-width="0.9" marker-end="url(#ahs)" marker-start="url(#ahs-r)"/>
+
+                  <rect x="916" y="636" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="954" y="654" text-anchor="middle" font-size="12" fill="#222">Community</text>
+                  <line x1="992" y1="650" x2="1012" y2="650" stroke="#333" stroke-width="0.9" marker-end="url(#ahs)" marker-start="url(#ahs-r)"/>
+
+                  <rect x="1012" y="636" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="1050" y="654" text-anchor="middle" font-size="12" fill="#222">Learning</text>
+                  <line x1="1088" y1="650" x2="1108" y2="650" stroke="#333" stroke-width="0.9" marker-end="url(#ahs)" marker-start="url(#ahs-r)"/>
+
+                  <rect x="1108" y="636" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="1146" y="654" text-anchor="middle" font-size="12" fill="#222">Technology</text>
+                  <line x1="1184" y1="650" x2="1204" y2="650" stroke="#333" stroke-width="0.9" marker-end="url(#ahs)" marker-start="url(#ahs-r)"/>
+
+                  <rect x="1204" y="636" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="1242" y="654" text-anchor="middle" font-size="12" fill="#222">Context</text>
+                  <line x1="1280" y1="650" x2="1300" y2="650" stroke="#333" stroke-width="0.9" marker-end="url(#ahs)" marker-start="url(#ahs-r)"/>
+
+                  <rect x="1300" y="636" width="76" height="28" rx="2" fill="#fafaf7" stroke="#444" stroke-width="1"/>
+                  <text x="1338" y="654" text-anchor="middle" font-size="12" fill="#222">Projects</text>
+
+                  <!-- ================================================================ -->
+                  <!--  FEEDBACK P1 — arcs sweep above                                   -->
+                  <!-- ================================================================ -->
+                  <path d="M 858,168 C 858,78 83,78 83,393 L 83,399"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                  <path d="M 954,168 C 954,68 199,68 199,393 L 199,399"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                  <path d="M 1050,168 C 1050,57 315,57 315,393 L 315,399"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                  <path d="M 1146,168 C 1146,47 431,47 431,393 L 431,399"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                  <path d="M 1242,168 C 1242,36 547,36 547,393 L 547,399"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                  <path d="M 1338,168 C 1338,26 663,26 663,393 L 663,399"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+
+                  <!-- ================================================================ -->
+                  <!--  FEEDBACK P3 — arcs sweep below                                   -->
+                  <!-- ================================================================ -->
+                  <path d="M 858,664 C 858,754 83,754 83,439 L 83,433"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                  <path d="M 954,664 C 954,764 199,764 199,439 L 199,433"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                  <path d="M 1050,664 C 1050,775 315,775 315,439 L 315,433"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                  <path d="M 1146,664 C 1146,785 431,785 431,439 L 431,433"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                  <path d="M 1242,664 C 1242,796 547,796 547,439 L 547,433"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                  <path d="M 1338,664 C 1338,806 663,806 663,439 L 663,433"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+
+                  <!-- ================================================================ -->
+                  <!--  FEEDBACK P2 — alternating above/below                            -->
+                  <!-- ================================================================ -->
+                  <path d="M 858,402 C 858,299 83,299 83,393 L 83,399"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                  <path d="M 954,430 C 954,540 199,540 199,439 L 199,433"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                  <path d="M 1050,402 C 1050,286 315,286 315,393 L 315,399"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                  <path d="M 1146,430 C 1146,553 431,553 431,439 L 431,433"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                  <path d="M 1242,402 C 1242,273 547,273 547,393 L 547,399"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                  <path d="M 1338,430 C 1338,566 663,566 663,439 L 663,433"
+                        fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2"
+                        marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+
+                  <!-- ================================================================ -->
+                  <!--  LEGEND                                                           -->
+                  <!-- ================================================================ -->
+                  <g transform="translate(46, 790)">
+                    <line x1="0" y1="0" x2="30" y2="0" stroke="#111" stroke-width="1.2" marker-end="url(#ah)" marker-start="url(#ah-r)"/>
+                    <text x="40" y="5" font-size="11" fill="#333">Bidirectional coupling (adjacent dimensions)</text>
+                    <path d="M 300,0 Q 315,6 330,0" fill="none" stroke="#666" stroke-width="1.1" marker-end="url(#spawn)"/>
+                    <text x="340" y="5" font-size="11" fill="#333">Instantiation</text>
+                    <path d="M 460,0 Q 475,8 490,0" fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="4,2" marker-end="url(#ahf)" marker-start="url(#ahf-r)"/>
+                    <text x="500" y="5" font-size="11" fill="#333">Data feedback (project ↔ org.)</text>
+                  </g>
+
+                </svg>
+                <div class="caption">
+                    Organization, program, project — self-similar, so the
+                    structure holds as it grows.
+                </div>
+            </div>
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 5 · HOW THE FRAMEWORK WAS INVENTED AND VALIDATED ============ -->
+        <section class="slide">
+            <div class="section-label">Method</div>
+            <h1>How the framework was invented and validated</h1>
+            <div class="title-rule"></div>
+
+            <div
+                style="
+                    font-family: &quot;Inter&quot;, sans-serif;
+                    font-size: 13px;
+                    color: #5a5a5a;
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                    margin: 6px 0 14px 0;
+                "
+            >
+                The arc — six validation stages, each testing the framework
+                under different conditions
+            </div>
+
+            <!-- Pipeline of 6 stages -->
+            <div
+                style="
+                    display: flex;
+                    align-items: stretch;
+                    gap: 8px;
+                    margin: 0 0 30px 0;
+                    max-width: 1280px;
+                "
+            >
+                <div
+                    style="
+                        flex: 1;
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 14px 16px;
+                        display: flex;
+                        flex-direction: column;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 11px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 4px;
+                        "
+                    >
+                        01
+                    </div>
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: #1a3a5c;
+                            margin-bottom: 6px;
+                        "
+                    >
+                        Research
+                    </div>
+                    <div
+                        style="
+                            font-size: 14px;
+                            color: #1a1a1a;
+                            line-height: 1.35;
+                        "
+                    >
+                        Questions scoped against complexity science &amp; AI.
+                    </div>
+                </div>
+                <div
+                    style="
+                        display: flex;
+                        align-items: center;
+                        color: #5a5a5a;
+                        font-size: 22px;
+                    "
+                >
+                    →
+                </div>
+
+                <div
+                    style="
+                        flex: 1;
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 14px 16px;
+                        display: flex;
+                        flex-direction: column;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 11px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 4px;
+                        "
+                    >
+                        02
+                    </div>
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: #1a3a5c;
+                            margin-bottom: 6px;
+                        "
+                    >
+                        Theory
+                    </div>
+                    <div
+                        style="
+                            font-size: 14px;
+                            color: #1a1a1a;
+                            line-height: 1.35;
+                        "
+                    >
+                        Architectural apparatus formalized in JIII.
+                    </div>
+                </div>
+                <div
+                    style="
+                        display: flex;
+                        align-items: center;
+                        color: #5a5a5a;
+                        font-size: 22px;
+                    "
+                >
+                    →
+                </div>
+
+                <div
+                    style="
+                        flex: 1;
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 14px 16px;
+                        display: flex;
+                        flex-direction: column;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 11px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 4px;
+                        "
+                    >
+                        03
+                    </div>
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: #1a3a5c;
+                            margin-bottom: 6px;
+                        "
+                    >
+                        Teaching
+                    </div>
+                    <div
+                        style="
+                            font-size: 14px;
+                            color: #1a1a1a;
+                            line-height: 1.35;
+                        "
+                    >
+                        9 years at Tec EGTP, refined by students.
+                    </div>
+                </div>
+                <div
+                    style="
+                        display: flex;
+                        align-items: center;
+                        color: #5a5a5a;
+                        font-size: 22px;
+                    "
+                >
+                    →
+                </div>
+
+                <div
+                    style="
+                        flex: 1;
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 14px 16px;
+                        display: flex;
+                        flex-direction: column;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 11px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 4px;
+                        "
+                    >
+                        04
+                    </div>
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: #1a3a5c;
+                            margin-bottom: 6px;
+                        "
+                    >
+                        Consulting
+                    </div>
+                    <div
+                        style="
+                            font-size: 14px;
+                            color: #1a1a1a;
+                            line-height: 1.35;
+                        "
+                    >
+                        Real client cases across 5 sectors.
+                    </div>
+                </div>
+                <div
+                    style="
+                        display: flex;
+                        align-items: center;
+                        color: #5a5a5a;
+                        font-size: 22px;
+                    "
+                >
+                    →
+                </div>
+
+                <div
+                    style="
+                        flex: 1;
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 14px 16px;
+                        display: flex;
+                        flex-direction: column;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 11px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 4px;
+                        "
+                    >
+                        05
+                    </div>
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: #1a3a5c;
+                            margin-bottom: 6px;
+                        "
+                    >
+                        Spin-off
+                    </div>
+                    <div
+                        style="
+                            font-size: 14px;
+                            color: #1a1a1a;
+                            line-height: 1.35;
+                        "
+                    >
+                        HA as independent entity, 2024.
+                    </div>
+                </div>
+                <div
+                    style="
+                        display: flex;
+                        align-items: center;
+                        color: #5a5a5a;
+                        font-size: 22px;
+                    "
+                >
+                    →
+                </div>
+
+                <div
+                    style="
+                        flex: 1;
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 14px 16px;
+                        display: flex;
+                        flex-direction: column;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 11px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 4px;
+                        "
+                    >
+                        06
+                    </div>
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: #1a3a5c;
+                            margin-bottom: 6px;
+                        "
+                    >
+                        Applications
+                    </div>
+                    <div
+                        style="
+                            font-size: 14px;
+                            color: #1a1a1a;
+                            line-height: 1.35;
+                        "
+                    >
+                        SIC-Q live · INEGI in construction.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Closing callouts: research culture + reveal -->
+            <div
+                style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 22px;
+                    max-width: 1240px;
+                "
+            >
+                <div
+                    style="
+                        background: #fafaf7;
+                        border-left: 4px solid #1a3a5c;
+                        padding: 16px 22px;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 13px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 6px;
+                        "
+                    >
+                        What sustains it
+                    </div>
+                    <div
+                        style="
+                            font-size: 17px;
+                            color: #1a1a1a;
+                            line-height: 1.4;
+                        "
+                    >
+                        Each engagement becomes research; each result feeds the
+                        next case.
+                    </div>
+                </div>
+                <div
+                    style="
+                        background: #edeae3;
+                        border-left: 4px solid #1a3a5c;
+                        padding: 16px 22px;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 13px;
+                            color: #1a3a5c;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 6px;
+                        "
+                    >
+                        What comes next
+                    </div>
+                    <div
+                        style="
+                            font-size: 17px;
+                            color: #1a1a1a;
+                            line-height: 1.4;
+                        "
+                    >
+                        The applications, then the architecture they share.
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 7 · DIVIDER · THE APPLICATIONS ============ -->
+        <section class="slide divider">
+            <div class="section-label">Part II</div>
+            <h1>The applications</h1>
+            <div class="title-rule"></div>
+            <h2>The architecture in production</h2>
+        </section>
+
+        <!-- ============ 8 · GUANAJUATO STATE PROGRAM ============ -->
+        <section class="slide">
+            <div class="section-label">Application · Guanajuato</div>
+            <h1>Guanajuato State Program 2024–2030</h1>
+            <div class="title-rule"></div>
+
+            <div
+                style="
+                    font-size: 17px;
+                    color: #5a5a5a;
+                    font-style: italic;
+                    margin: 4px 0 14px 0;
+                    max-width: 1240px;
+                "
+            >
+                The first state program designed from scientific evidence and
+                citizen data.
+            </div>
+
+            <!-- Headline numbers -->
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-value">26,563</div>
+                    <div class="stat-label">Citizens consulted</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">27 / 9</div>
+                    <div class="stat-label">
+                        Workshops · in-person / online
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">488</div>
+                    <div class="stat-label">
+                        Actions traceable to citizen voice
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">40 / 144</div>
+                    <div class="stat-label">Objectives / strategies</div>
+                </div>
+            </div>
+
+            <!-- Qualitative cards -->
+            <div
+                style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 22px;
+                    max-width: 1240px;
+                    margin: 6px 0 22px 0;
+                "
+            >
+                <div
+                    style="
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 18px 24px;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 20px;
+                            font-weight: 600;
+                            color: #1a3a5c;
+                            margin-bottom: 6px;
+                        "
+                    >
+                        Citizen voice as a structural input
+                    </div>
+                    <div style="font-size: 15px; color: #1a1a1a; line-height: 1.45">
+                        Treated as a first-class input across four regions and
+                        the diaspora — and carried into every objective.
+                    </div>
+                </div>
+                <div
+                    style="
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 18px 24px;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 20px;
+                            font-weight: 600;
+                            color: #1a3a5c;
+                            margin-bottom: 6px;
+                        "
+                    >
+                        A public-facing AI agent
+                    </div>
+                    <div style="font-size: 15px; color: #1a1a1a; line-height: 1.45">
+                        <em>"Esperanza"</em> answers citizen queries; the plans
+                        are published in accessible multimodal formats.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pull quote -->
+            <div
+                style="
+                    background: #edeae3;
+                    border-left: 4px solid #1a3a5c;
+                    padding: 18px 28px;
+                    max-width: 1240px;
+                "
+            >
+                <div
+                    style="
+                        font-family: var(
+                            --serif,
+                            &quot;Source Serif 4&quot;,
+                            Georgia,
+                            serif
+                        );
+                        font-size: 22px;
+                        font-style: italic;
+                        color: #1a1a1a;
+                        line-height: 1.4;
+                        margin-bottom: 8px;
+                    "
+                >
+                    "That my voice as a woman and a student be heard, that I can
+                    get to school safely."
+                </div>
+                <div
+                    style="
+                        font-family: &quot;Inter&quot;, sans-serif;
+                        font-size: 14px;
+                        color: #5a5a5a;
+                    "
+                >
+                    — Ximena, San Luis de la Paz · Guanajuato citizen
+                    consultation
+                </div>
+            </div>
+
+            <a
+                href="https://docs.google.com/presentation/d/1ftdznKJJeyszoGk_wMa6dP5iPdBEpJExhhv9tyfNIgM/edit?slide=id.g36d4281e21f_2_656#slide=id.g36d4281e21f_2_656"
+                target="_blank"
+                rel="noopener"
+                class="evidence-link"
+                >Guanajuato visual brief — Google Drive</a
+            >
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 9 · SIC-Q · THE PROBLEM ============ -->
+        <section class="slide">
+            <div class="section-label">Application · Querétaro</div>
+            <h1>SIC-Q: the complexity problem in state government</h1>
+            <div class="title-rule"></div>
+
+            <div
+                style="
+                    font-size: 17px;
+                    color: #5a5a5a;
+                    font-style: italic;
+                    margin: 4px 0 16px 0;
+                    max-width: 1240px;
+                "
+            >
+                Querétaro builds government on evidence — laws, plans, citizen
+                input, and statistics.
+            </div>
+
+            <!-- Diagnosis -->
+            <div
+                style="
+                    background: #fafaf7;
+                    border-left: 4px solid #1a3a5c;
+                    padding: 18px 26px;
+                    margin: 0 0 22px 0;
+                    max-width: 1240px;
+                "
+            >
+                <div
+                    style="
+                        font-family: &quot;Inter&quot;, sans-serif;
+                        font-size: 24px;
+                        font-weight: 600;
+                        color: #1a3a5c;
+                        margin-bottom: 6px;
+                    "
+                >
+                    The data already exists. The hard part is coherence.
+                </div>
+                <div style="font-size: 16px; color: #5a5a5a; font-style: italic">
+                    information sits in silos · secretariats work in isolation ·
+                    citizen voice has no agentic structure
+                </div>
+            </div>
+
+            <!-- Answer -->
+            <div
+                style="
+                    border: 2px solid #1a3a5c;
+                    background: #edeae3;
+                    padding: 20px 28px;
+                    max-width: 1240px;
+                    margin: 0 0 8px 0;
+                "
+            >
+                <div
+                    style="
+                        font-family: &quot;Inter&quot;, sans-serif;
+                        font-size: 13px;
+                        color: #1a3a5c;
+                        text-transform: uppercase;
+                        letter-spacing: 0.08em;
+                        margin-bottom: 10px;
+                    "
+                >
+                    What it needs
+                </div>
+                <div
+                    style="
+                        font-family: &quot;Inter&quot;, sans-serif;
+                        font-size: 26px;
+                        font-weight: 600;
+                        color: #1a1a1a;
+                        line-height: 1.2;
+                    "
+                >
+                    An architecture — the layer that brings heterogeneous voices
+                    into one structure
+                </div>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 0;">
+                <a
+                    href="https://ha-sicq-agents.horizonsarchitecture.ai/"
+                    target="_blank"
+                    rel="noopener"
+                    class="evidence-link"
+                    style="margin: 0;"
+                    >SIC-Q agents — live system</a
+                >
+                <a
+                    href="https://sicq-demo.horizonsarchitecture.ai/"
+                    target="_blank"
+                    rel="noopener"
+                    class="evidence-link"
+                    style="margin: 0;"
+                    >Governor's agent</a
+                >
+                <a
+                    href="https://taller-sic-q.horizonsarchitecture.ai"
+                    target="_blank"
+                    rel="noopener"
+                    class="evidence-link"
+                    style="margin: 0;"
+                    >Citizen participation workshops</a
+                >
+                <a
+                    href="https://sicq-demo.horizonsarchitecture.ai/"
+                    target="_blank"
+                    rel="noopener"
+                    class="evidence-link"
+                    style="margin: 0;"
+                    >Citizen participation platform</a
+                >
+            </div>
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 15 · INEGI · EVALUATING SOCIAL PROGRAMS AND PUBLIC POLICY ============ -->
+        <section class="slide">
+            <div class="section-label">Application · INEGI</div>
+            <h1>FUGA — evaluating social programs and public policy at INEGI</h1>
+            <div class="title-rule"></div>
+
+            <!-- Institutional setting -->
+            <div
+                style="
+                    background: #fafaf7;
+                    border-left: 4px solid #1a3a5c;
+                    padding: 16px 26px;
+                    margin: 4px 0 22px 0;
+                    max-width: 1240px;
+                "
+            >
+                <span
+                    style="
+                        font-family: &quot;Inter&quot;, sans-serif;
+                        font-size: 20px;
+                        font-weight: 600;
+                        color: #1a3a5c;
+                    "
+                    >Since July 2025</span
+                >
+                <span style="font-size: 18px; color: #1a1a1a">
+                    — INEGI holds the mandate to measure poverty and evaluate
+                    social-development policy, with CONEVAL's historical
+                    archive.</span
+                >
+            </div>
+
+            <!-- What the project does -->
+            <div
+                style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 22px;
+                    max-width: 1240px;
+                    margin-bottom: 24px;
+                "
+            >
+                <div
+                    style="
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 18px 24px;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 13px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.08em;
+                            margin-bottom: 8px;
+                        "
+                    >
+                        What it evaluates
+                    </div>
+                    <div style="font-size: 16px; color: #1a1a1a; line-height: 1.45">
+                        Social programs and public policy assessed continuously
+                        against official statistics and the historical archive.
+                    </div>
+                </div>
+                <div
+                    style="
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 18px 24px;
+                    "
+                >
+                    <div
+                        style="
+                            font-family: &quot;Inter&quot;, sans-serif;
+                            font-size: 13px;
+                            color: #5a5a5a;
+                            text-transform: uppercase;
+                            letter-spacing: 0.08em;
+                            margin-bottom: 8px;
+                        "
+                    >
+                        How it works
+                    </div>
+                    <div style="font-size: 16px; color: #1a1a1a; line-height: 1.45">
+                        FUGA, an HA agentic architecture for evaluation, keeps
+                        the work traceable and governed as it runs at national
+                        scale.
+                    </div>
+                </div>
+            </div>
+
+            <!-- What it delivers -->
+            <div
+                style="
+                    background: #edeae3;
+                    border-left: 4px solid #1a3a5c;
+                    padding: 20px 28px;
+                    max-width: 1240px;
+                "
+            >
+                <div
+                    style="
+                        font-family: &quot;Inter&quot;, sans-serif;
+                        font-size: 13px;
+                        color: #1a3a5c;
+                        text-transform: uppercase;
+                        letter-spacing: 0.08em;
+                        margin-bottom: 8px;
+                    "
+                >
+                    What it delivers
+                </div>
+                <div style="font-size: 19px; color: #1a1a1a; line-height: 1.4">
+                    Continuous, traceable, governed evaluation of programs
+                    against official statistics — supplying the institutions
+                    that decide budgets.
+                </div>
+            </div>
+
+            <a
+                href="https://ha-fuga.horizonsarchitecture.ai/en/demo"
+                target="_blank"
+                rel="noopener"
+                class="evidence-link"
+                >FUGA — live demo</a
+            >
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 22 · BONUS · UPU (INTERNATIONAL) ============ -->
+        <section class="slide">
+            <div class="section-label">Bonus · UPU</div>
+            <h1>Beyond Mexico: the architecture at the Universal Postal Union</h1>
+            <div class="title-rule"></div>
+
+            <div
+                style="
+                    font-size: 18px;
+                    color: #1a1a1a;
+                    line-height: 1.45;
+                    max-width: 1180px;
+                    margin: 8px 0 24px 0;
+                "
+            >
+                The same architecture, applied at the international level — with
+                the Universal Postal Union, a United Nations agency, in
+                collaboration with José Anson. Two live prototypes:
+            </div>
+
+            <div
+                style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 26px;
+                    max-width: 1100px;
+                    margin: 0 0 26px 0;
+                "
+            >
+                <div style="border: 1px solid #d6d3cc; border-top: 3px solid #1a3a5c; background: #fafaf7; padding: 22px 26px;">
+                    <div style="font-family: &quot;Inter&quot;, sans-serif; font-size: 22px; font-weight: 600; color: #1a3a5c; margin-bottom: 8px;">Mira</div>
+                    <div style="font-size: 15px; color: #1a1a1a; line-height: 1.45; margin-bottom: 14px;">A live prototype from the UPU collaboration.</div>
+                    <a href="https://mira.horizonsarchitecture.ai/" target="_blank" rel="noopener" class="evidence-link" style="margin: 0;">Open Mira</a>
+                </div>
+                <div style="border: 1px solid #d6d3cc; border-top: 3px solid #1a3a5c; background: #fafaf7; padding: 22px 26px;">
+                    <div style="font-family: &quot;Inter&quot;, sans-serif; font-size: 22px; font-weight: 600; color: #1a3a5c; margin-bottom: 8px;">Postal sector agent</div>
+                    <div style="font-size: 15px; color: #1a1a1a; line-height: 1.45; margin-bottom: 14px;">A live agent on the UPU .post network.</div>
+                    <a href="https://agent.udp.post/" target="_blank" rel="noopener" class="evidence-link" style="margin: 0;">Open the agent</a>
+                </div>
+            </div>
+
+            <div
+                style="
+                    background: #edeae3;
+                    border-left: 4px solid #1a3a5c;
+                    padding: 18px 28px;
+                    max-width: 1240px;
+                    font-size: 18px;
+                    color: #1a1a1a;
+                    line-height: 1.45;
+                "
+            >
+                Public, private, and international — one architecture, one
+                research line.
+            </div>
+
+            <a
+                href="https://edgarbarrosoha.github.io/ha-public/upu-lessons-for-the-future.html"
+                target="_blank"
+                rel="noopener"
+                class="evidence-link"
+                >UPU — lessons for the future</a
+            >
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 19 · ACADEMIC VALIDATION · JIII ============ -->
+        <section class="slide">
+            <div class="section-label">Application · Industry &amp; academia</div>
+            <h1>The same method, written up as industrial theory</h1>
+            <div class="title-rule"></div>
+
+            <div
+                style="
+                    background: #fafaf7;
+                    border-left: 4px solid #1a3a5c;
+                    padding: 16px 26px;
+                    margin: 4px 0 20px 0;
+                    max-width: 1240px;
+                    font-size: 17px;
+                    color: #1a1a1a;
+                    line-height: 1.45;
+                "
+            >
+                JIII is one application of the architecture — the case of
+                writing the method up as a design theory for industry. It is
+                being prepared as <strong>Horizons Architecture</strong> for the
+                <em>Journal of Industrial Information Integration</em>
+                (<strong>Q1 Scopus</strong>), on the editor's invitation following
+                a keynote at the International Society of Transdisciplinary
+                Engineering conference.
+            </div>
+
+            <div
+                style="
+                    font-family: &quot;Inter&quot;, sans-serif;
+                    font-size: 13px;
+                    color: #5a5a5a;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    margin-bottom: 12px;
+                "
+            >
+                In the paper, the method is formalized as
+            </div>
+            <div
+                style="
+                    display: flex;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                    margin-bottom: 22px;
+                "
+            >
+                <span style="background: #edeae3; border: 1px solid #d6d3cc; border-radius: 18px; padding: 8px 20px; font-family: &quot;Inter&quot;, sans-serif; font-size: 16px; color: #1a1a1a">typed state spaces</span>
+                <span style="background: #edeae3; border: 1px solid #d6d3cc; border-radius: 18px; padding: 8px 20px; font-family: &quot;Inter&quot;, sans-serif; font-size: 16px; color: #1a1a1a">target states</span>
+                <span style="background: #edeae3; border: 1px solid #d6d3cc; border-radius: 18px; padding: 8px 20px; font-family: &quot;Inter&quot;, sans-serif; font-size: 16px; color: #1a1a1a">divergence</span>
+                <span style="background: #edeae3; border: 1px solid #d6d3cc; border-radius: 18px; padding: 8px 20px; font-family: &quot;Inter&quot;, sans-serif; font-size: 16px; color: #1a1a1a">coherence</span>
+                <span style="background: #edeae3; border: 1px solid #d6d3cc; border-radius: 18px; padding: 8px 20px; font-family: &quot;Inter&quot;, sans-serif; font-size: 16px; color: #1a1a1a">score</span>
+                <span style="background: #edeae3; border: 1px solid #d6d3cc; border-radius: 18px; padding: 8px 20px; font-family: &quot;Inter&quot;, sans-serif; font-size: 16px; color: #1a1a1a">governed hybrid agency</span>
+            </div>
+
+            <div
+                style="
+                    background: #edeae3;
+                    border-left: 4px solid #1a3a5c;
+                    padding: 18px 28px;
+                    max-width: 1240px;
+                "
+            >
+                <div
+                    style="
+                        font-family: &quot;Inter&quot;, sans-serif;
+                        font-size: 20px;
+                        color: #1a1a1a;
+                        line-height: 1.4;
+                    "
+                >
+                    <strong style="color: #1a3a5c"
+                        >The same architecture installed in SIC-Q, Guanajuato,
+                        and INEGI — here written as formal theory.</strong
+                    >
+                    One method, general by design: government, health, and
+                    industry.
+                </div>
+            </div>
+
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 20 · COVERAGE MATRIX ============ -->
+        <section class="slide">
+            <div class="section-label">Coverage</div>
+            <h1>Where this research line has been applied</h1>
+            <div class="title-rule"></div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 32%">Application</th>
+                        <th class="center" style="width: 14%">Health</th>
+                        <th class="center" style="width: 14%">Government</th>
+                        <th class="center" style="width: 14%">Financial</th>
+                        <th class="center" style="width: 26%">
+                            Industry / Logistics
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Guanajuato</td>
+                        <td class="center matrix-no">—</td>
+                        <td class="center matrix-yes">✓</td>
+                        <td class="center matrix-no">—</td>
+                        <td class="center matrix-no">—</td>
+                    </tr>
+                    <tr>
+                        <td>Querétaro / SIC-Q</td>
+                        <td class="center matrix-indirect">(SESEQ)</td>
+                        <td class="center matrix-yes">✓</td>
+                        <td class="center matrix-no">—</td>
+                        <td class="center matrix-no">—</td>
+                    </tr>
+                    <tr>
+                        <td>INEGI (evaluation)</td>
+                        <td class="center matrix-no">—</td>
+                        <td class="center matrix-yes">✓</td>
+                        <td class="center matrix-no">—</td>
+                        <td class="center matrix-no">—</td>
+                    </tr>
+                    <tr>
+                        <td>Wellcome LAC</td>
+                        <td class="center matrix-yes">✓</td>
+                        <td class="center matrix-no">—</td>
+                        <td class="center matrix-no">—</td>
+                        <td class="center matrix-no">—</td>
+                    </tr>
+                    <tr>
+                        <td>JIII (industrial theory)</td>
+                        <td class="center matrix-yes">✓</td>
+                        <td class="center matrix-no">—</td>
+                        <td class="center matrix-indirect">(indirect)</td>
+                        <td class="center matrix-yes">✓</td>
+                    </tr>
+                    <tr>
+                        <td>UPU</td>
+                        <td class="center matrix-no">—</td>
+                        <td class="center matrix-no">—</td>
+                        <td class="center matrix-no">—</td>
+                        <td class="center matrix-yes">✓</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div
+                style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr 1fr;
+                    gap: 16px;
+                    max-width: 1280px;
+                    margin-top: 18px;
+                "
+            >
+                <div
+                    style="
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 16px 20px;
+                        font-size: 15px;
+                        color: #1a1a1a;
+                        line-height: 1.45;
+                    "
+                >
+                    Coverage in three of four target sectors.
+                </div>
+                <div
+                    style="
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #fafaf7;
+                        padding: 16px 20px;
+                        font-size: 15px;
+                        color: #1a1a1a;
+                        line-height: 1.45;
+                    "
+                >
+                    One architecture, distinct applications, a single formal
+                    language.
+                </div>
+                <div
+                    style="
+                        border: 1px solid #d6d3cc;
+                        border-top: 3px solid #1a3a5c;
+                        background: #edeae3;
+                        padding: 16px 20px;
+                        font-size: 15px;
+                        color: #1a1a1a;
+                        line-height: 1.45;
+                    "
+                >
+                    <strong style="color: #1a3a5c"
+                        >Financial services</strong
+                    >
+                    is the next sector this line opens onto.
+                </div>
+            </div>
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 20b · THE TEAM AROUND THE RESEARCH ============ -->
+        <section class="slide">
+            <div class="section-label">The team</div>
+            <h1>A team around the research</h1>
+            <div class="title-rule"></div>
+
+            <div
+                style="
+                    font-size: 18px;
+                    color: #1a1a1a;
+                    line-height: 1.45;
+                    max-width: 1180px;
+                    margin: 8px 0 24px 0;
+                "
+            >
+                The line is built with a team — collaborators who co-author it,
+                advisors who sharpen it, and partners who put it to work in real
+                institutions.
+            </div>
+
+            <div
+                style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 22px;
+                    max-width: 1200px;
+                    margin: 0 0 24px 0;
+                "
+            >
+                <div style="border: 1px solid #d6d3cc; border-top: 3px solid #1a3a5c; background: #fafaf7; padding: 20px 26px;">
+                    <div style="font-family: &quot;Inter&quot;, sans-serif; font-size: 19px; font-weight: 600; color: #1a3a5c; line-height: 1.3; margin-bottom: 8px;">Co-authoring and reviewing the empirical research</div>
+                    <div style="font-size: 15px; color: #1a1a1a; line-height: 1.45;">Ernesto Stein — economist, ex-IDB · Margaret — empirical review</div>
+                </div>
+                <div style="border: 1px solid #d6d3cc; border-top: 3px solid #1a3a5c; background: #fafaf7; padding: 20px 26px;">
+                    <div style="font-family: &quot;Inter&quot;, sans-serif; font-size: 19px; font-weight: 600; color: #1a3a5c; line-height: 1.3; margin-bottom: 8px;">Advising on decision-making under uncertainty</div>
+                    <div style="font-size: 15px; color: #1a1a1a; line-height: 1.45;">Steven Popper — RAND Corporation</div>
+                </div>
+                <div style="border: 1px solid #d6d3cc; border-top: 3px solid #1a3a5c; background: #fafaf7; padding: 20px 26px;">
+                    <div style="font-family: &quot;Inter&quot;, sans-serif; font-size: 19px; font-weight: 600; color: #1a3a5c; line-height: 1.3; margin-bottom: 8px;">Partnering on the international application</div>
+                    <div style="font-size: 15px; color: #1a1a1a; line-height: 1.45;">José Anson — Universal Postal Union</div>
+                </div>
+                <div style="border: 1px solid #d6d3cc; border-top: 3px solid #1a3a5c; background: #fafaf7; padding: 20px 26px;">
+                    <div style="font-family: &quot;Inter&quot;, sans-serif; font-size: 19px; font-weight: 600; color: #1a3a5c; line-height: 1.3; margin-bottom: 8px;">Collaborating on multilateral best-practice work</div>
+                    <div style="font-size: 15px; color: #1a1a1a; line-height: 1.45;">Abril Campos — WTO</div>
+                </div>
+            </div>
+
+            <div
+                style="
+                    background: #edeae3;
+                    border-left: 4px solid #1a3a5c;
+                    padding: 18px 28px;
+                    max-width: 1240px;
+                    font-size: 18px;
+                    color: #1a1a1a;
+                    line-height: 1.45;
+                "
+            >
+                Around them, working groups of developers, economists, and data
+                scientists carry the work day to day — a community growing inside
+                Tec de Monterrey and with institutions around the world.
+            </div>
+
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 21 · FUTURE DIRECTIONS ============ -->
+        <section class="slide">
+            <div class="section-label">Forward</div>
+            <h1>Future directions, and what funding enables</h1>
+            <div class="title-rule"></div>
+
+            <div
+                style="
+                    font-size: 18px;
+                    color: #1a1a1a;
+                    font-style: italic;
+                    margin: 4px 0 18px 0;
+                    max-width: 1240px;
+                "
+            >
+                The direction is ambitious and already underway — a system that
+                strengthens itself, compounds with every advance in AI, and
+                scales across institutions.
+            </div>
+
+            <div
+                style="
+                    font-family: &quot;Inter&quot;, sans-serif;
+                    font-size: 13px;
+                    color: #5a5a5a;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    margin-bottom: 14px;
+                "
+            >
+                Three directions, each grounded in what already runs in production
+            </div>
+
+            <div
+                style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr 1fr;
+                    gap: 22px;
+                    max-width: 1240px;
+                    margin-bottom: 24px;
+                "
+            >
+                <!-- card 1: measure the method -->
+                <div style="border: 1px solid #d6d3cc; border-top: 3px solid #1a3a5c; background: #fafaf7; padding: 20px 24px;">
+                    <div style="font-family: &quot;Inter&quot;, sans-serif; font-size: 13px; color: #5a5a5a; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">From practice to benchmark</div>
+                    <div style="font-family: &quot;Inter&quot;, sans-serif; font-size: 21px; font-weight: 600; color: #1a3a5c; line-height: 1.3; margin-bottom: 10px;">A method that measures and improves itself</div>
+                    <div style="font-size: 15px; color: #1a1a1a; line-height: 1.45;">The system learns to evaluate its own coordination — coherence, decision quality, adaptability — and to strengthen it as it runs. In time, a benchmark for how well humans and AI decide together.</div>
+                </div>
+                <!-- card 2: integrate what comes next -->
+                <div style="border: 1px solid #d6d3cc; border-top: 3px solid #1a3a5c; background: #fafaf7; padding: 20px 24px;">
+                    <div style="font-family: &quot;Inter&quot;, sans-serif; font-size: 13px; color: #5a5a5a; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">From today's models to tomorrow's</div>
+                    <div style="font-family: &quot;Inter&quot;, sans-serif; font-size: 21px; font-weight: 600; color: #1a3a5c; line-height: 1.3; margin-bottom: 10px;">An architecture where AI compounds</div>
+                    <div style="font-size: 15px; color: #1a1a1a; line-height: 1.45;">Each new model and tool plugs into the same governed structure, so capability accumulates across generations of AI instead of resetting with each release. The frontier arrives as an upgrade, not a migration.</div>
+                </div>
+                <!-- card 3: turn engagements into products -->
+                <div style="border: 1px solid #d6d3cc; border-top: 3px solid #1a3a5c; background: #fafaf7; padding: 20px 24px;">
+                    <div style="font-family: &quot;Inter&quot;, sans-serif; font-size: 13px; color: #5a5a5a; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">From data foundations to federation</div>
+                    <div style="font-family: &quot;Inter&quot;, sans-serif; font-size: 21px; font-weight: 600; color: #1a3a5c; line-height: 1.3; margin-bottom: 10px;">A federation of agents and data</div>
+                    <div style="font-size: 15px; color: #1a1a1a; line-height: 1.45;">Build the complex data foundations large organizations depend on — as SIC-Q did, which is far from trivial — then build agents on top. The horizon: a federation of agents and data across public, private, and international institutions.</div>
+                </div>
+            </div>
+
+            <div
+                style="
+                    background: #edeae3;
+                    border-left: 4px solid #1a3a5c;
+                    padding: 18px 28px;
+                    max-width: 1240px;
+                "
+            >
+                <div style="font-family: &quot;Inter&quot;, sans-serif; font-size: 19px; color: #1a1a1a; line-height: 1.4">
+                    <strong style="color: #1a3a5c">Sponsored applied research</strong>
+                    funds the concrete near-term — metrics, integrations, the
+                    next products — on a path toward a durable foundation for
+                    hybrid intelligence: an architecture that outlasts any single
+                    model and grows stronger as AI advances.
+                </div>
+            </div>
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <!-- ============ 24 · CLOSING · THANK YOU ============ -->
+        <section class="slide cover">
+            <div class="section-label">Williams meeting · June 5, 2026</div>
+            <h1>Thank you for listening</h1>
+            <div class="meta">
+                <strong>Edgar Barroso</strong><br />
+                Research Professor, EGTP · Tec de Monterrey<br />
+                edgarbarroso@tec.mx
+            </div>
+            <div class="slide-footer">Tec de Monterrey · EGTP</div>
+            <div class="slide-number"></div>
+        </section>
+
+        <div class="nav-hint">
+            ← → navigate · F11 fullscreen · ⌘P export PDF
+        </div>
+
+        <script>
+            const slides = document.querySelectorAll(".slide");
+            let current = 0;
+
+            // --- Fit the 1600×900 slide inside the viewport ---
+            function fitStage() {
+                const padding = 0;
+                const scaleX = (window.innerWidth - padding) / 1600;
+                const scaleY = (window.innerHeight - padding) / 900;
+                const scale = Math.min(scaleX, scaleY, 1.4);
+                document.documentElement.style.setProperty("--scale", scale);
+            }
+            window.addEventListener("resize", fitStage);
+            fitStage();
+
+            // --- Inject institutional logo into every slide ---
+            slides.forEach((slide) => {
+                const logo = document.createElement("img");
+                logo.className = "corner-logo";
+                logo.src = "../assets/EGob_Horizontal_Negro.png";
+                logo.alt =
+                    "Escuela de Gobierno y Transformación Pública, Tec de Monterrey";
+                slide.appendChild(logo);
+            });
+
+            // --- Navigation ---
+            function show(n) {
+                slides[current].classList.remove("active");
+                current = (n + slides.length) % slides.length;
+                slides[current].classList.add("active");
+                updateCounters();
+                window.location.hash = current + 1;
+            }
+
+            function updateCounters() {
+                const total = slides.length;
+                slides.forEach((s, i) => {
+                    const num = s.querySelector(".slide-number");
+                    if (num)
+                        num.textContent = `${String(i + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+                });
+            }
+
+            document.addEventListener("keydown", (e) => {
+                if (["ArrowRight", " ", "PageDown", "Enter"].includes(e.key)) {
+                    e.preventDefault();
+                    show(current + 1);
+                }
+                if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) {
+                    e.preventDefault();
+                    show(current - 1);
+                }
+                if (e.key === "Home") {
+                    e.preventDefault();
+                    show(0);
+                }
+                if (e.key === "End") {
+                    e.preventDefault();
+                    show(slides.length - 1);
+                }
+            });
+
+            document.addEventListener("click", (e) => {
+                if (e.target.closest("a")) return;
+                const x = e.clientX / window.innerWidth;
+                if (x > 0.6) show(current + 1);
+                else if (x < 0.4) show(current - 1);
+            });
+
+            // Deep link via hash
+            if (window.location.hash) {
+                const n = parseInt(window.location.hash.replace("#", "")) - 1;
+                if (!isNaN(n) && n >= 0 && n < slides.length) {
+                    slides[0].classList.remove("active");
+                    current = n;
+                    slides[current].classList.add("active");
+                }
+            }
+
+            updateCounters();
+        </script>
+    </body>
+</html>
